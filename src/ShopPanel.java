@@ -12,7 +12,7 @@ import java.io.IOException;
 class ShopPanel extends JPanel implements MouseListener {
 
 
-
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         int x = 0;

@@ -6,15 +6,18 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-public class TitleScreen extends JPanel implements MouseListener {
+public class TitleScreen extends JPanel implements MouseListener,Runnable {
 
     private boolean showOverworld = false;
     private boolean showCredits = false;
+
+    private Overworld o;
 
     private Rectangle playHitbox = new Rectangle(830,240,300,200);
     private Rectangle creditsHitbox = new Rectangle(700,600,400,150);
 
     public TitleScreen() {
+        o = new Overworld();
     };
 
     protected void paintComponent(Graphics g) {
@@ -56,4 +59,12 @@ public class TitleScreen extends JPanel implements MouseListener {
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void run() {
+        if (showOverworld) {
+            o.repaint();
+            this.setIgnoreRepaint(true);
+        }
+    }
 }

@@ -26,7 +26,7 @@ public class MainFrame extends JFrame implements Runnable {
     }
 
     public void run() {
-        while (true) {
+        while (!p.getIgnoreRepaint()) {
             p.repaint();
         }
     }
