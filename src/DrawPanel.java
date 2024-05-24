@@ -11,32 +11,30 @@ import java.util.*;
 
 class DrawPanel extends JPanel implements MouseListener {
 
-    private BufferedImage images;
+    private BufferedImage backdrop;
     private String fileName = "title";
     private int x;
     private int y;
-    private Rectangle overworldHitbox = new Rectangle(830,240,300,200);
-    private Rectangle creditsHitbox = new Rectangle(700,600,400,150);
 
-    private ArrayList<Rectangle> buttons;
-    private ArrayList<String> fileNames;
+    private NamedRect overworld = new NamedRect("overworld",830,240,300,200);
+    private NamedRect credits = new NamedRect("credits",700,600,400,150);
+
+    private ArrayList<NamedRect> buttons;
+
 
 
 public DrawPanel() {
 
     this.addMouseListener(this);
-    buttons = new ArrayList<Rectangle>();
-    fileNames = new ArrayList<String>();
-    buttons.add(overworldHitbox);
-    fileNames.add("overworld");
-    buttons.add(creditsHitbox);
-    fileNames.add("credits");
+    buttons = new ArrayList<NamedRect>();
+    buttons.add(overworld);
+    buttons.add(credits);
 }
 
 public void checkButtons(Point clicked) {
-    for (int i = 0; i < buttons.size(); i++) {
-        if (buttons.get(i).contains(clicked)) {
-            fileName = fileNames.get(i);
+    for (NamedRect n : buttons) {
+        if (n.contains(clicked) && n.clickable) {
+            fileName = n.getName();
         }
     }
 }
@@ -44,11 +42,11 @@ public void checkButtons(Point clicked) {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try {
-            images = ImageIO.read(new File("images/" + fileName + ".png"));
+            backdrop = ImageIO.read(new File("images/" + fileName + ".png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        g.drawImage(images, 0 , 0, null);
+        g.drawImage(backdrop, 0 , 0, null);
     }
 
 
