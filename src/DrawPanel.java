@@ -18,6 +18,7 @@ class DrawPanel extends JPanel implements MouseListener {
 
     private NamedRect overworld = new NamedRect("overworld",830,240,300,200);
     private NamedRect credits = new NamedRect("credits",700,600,400,150);
+    private NamedRect title = new NamedRect("title",0,700,200,100);
 
     private ArrayList<NamedRect> buttons;
 
@@ -27,6 +28,7 @@ public DrawPanel() {
 
     this.addMouseListener(this);
     buttons = new ArrayList<NamedRect>();
+    buttons.add(title);
     buttons.add(overworld);
     buttons.add(credits);
 }
@@ -47,8 +49,31 @@ public void checkButtons(Point clicked) {
             throw new RuntimeException(e);
         }
         g.drawImage(backdrop, 0 , 0, null);
+
     }
 
+    public void repositionButtons() { // RE-POSITIONS BUTTONS BASED ON CURRENT SCREEN
+    int i = 0;
+    for (NamedRect b : buttons) {
+        String f = b.getName();
+        if (fileName.equals(f)) {
+                buttons.get(i).setClickable(false);
+        }
+        i++;
+    }
+    if (fileName.equals("title")) {
+        buttons.get(1).setClickable(true);
+        buttons.get(2).setClickable(true);
+    }
+    if (fileName.equals("overworld")) {
+        buttons.get(0).setClickable(true);
+        buttons.get(2).setClickable(false);
+    }
+    if (fileName.equals("credits")) {
+        buttons.get(0).setClickable(true);
+        buttons.get(1).setClickable(false);
+    }
+}
 
     //EVERYTHING MOUSE - PRESS GOES HERE
     public void mousePressed(MouseEvent e) {
@@ -56,7 +81,8 @@ public void checkButtons(Point clicked) {
 
         Point clicked = e.getPoint();
         if (e.getButton() == 1) {
-          checkButtons(clicked);
+            checkButtons(clicked);
+            repositionButtons();
         }
 
         if (e.getButton() == 3) { // IF RIGHT MOUSE BUTTON

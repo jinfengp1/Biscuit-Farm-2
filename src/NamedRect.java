@@ -15,4 +15,10 @@ public class NamedRect extends Rectangle{
         return name;
     }
 
+    public boolean isClickable() { return clickable; }
+
+    public void setClickable(boolean c) {
+        clickable = c;
+    }
+
 }
