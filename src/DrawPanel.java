@@ -16,25 +16,37 @@ class DrawPanel extends JPanel implements MouseListener {
     private int x;
     private int y;
 
+    private ArrayList<NamedRect> screens;
     private NamedRect overworld = new NamedRect("overworld",830,240,300,200);
     private NamedRect credits = new NamedRect("credits",700,600,400,150);
     private NamedRect title = new NamedRect("title",0,700,200,100);
-
-    private ArrayList<NamedRect> buttons;
-
+    private NamedRect plantation = new NamedRect("PLANTATION",650,300,100,60);
+    private NamedRect biscuitown = new NamedRect("BISCUITOWN",900,550,100,60);
+    private NamedRect mountain = new NamedRect("MOUNTAIN",950,180,100,60);
+    private NamedRect desert = new NamedRect("DESERT",660,570,100,60);
+    private NamedRect forest = new NamedRect("FOREST",500,190,100,60);
+    private NamedRect volcano = new NamedRect("VOLCANO",140,520,100,60);
+    private NamedRect house = new NamedRect("HOUSE",300,10,70,40);
 
 
 public DrawPanel() {
 
     this.addMouseListener(this);
-    buttons = new ArrayList<NamedRect>();
-    buttons.add(title);
-    buttons.add(overworld);
-    buttons.add(credits);
+    screens = new ArrayList<NamedRect>();
+    screens.add(title);
+    screens.add(overworld);
+    screens.add(credits);
+    screens.add(plantation); // overworld
+    screens.add(biscuitown);
+    screens.add(mountain);
+    screens.add(desert);
+    screens.add(forest);
+    screens.add(volcano);
+    screens.add(house); // end overworld
 }
 
 public void checkButtons(Point clicked) {
-    for (NamedRect n : buttons) {
+    for (NamedRect n : screens) {
         if (n.contains(clicked) && n.clickable) {
             fileName = n.getName();
         }
@@ -49,30 +61,24 @@ public void checkButtons(Point clicked) {
             throw new RuntimeException(e);
         }
         g.drawImage(backdrop, 0 , 0, null);
-
     }
 
     public void repositionButtons() { // RE-POSITIONS BUTTONS BASED ON CURRENT SCREEN
-    int i = 0;
-    for (NamedRect b : buttons) {
-        String f = b.getName();
-        if (fileName.equals(f)) {
-                buttons.get(i).setClickable(false);
+    String f = fileName;
+    for (int i = 0; i < screens.size(); i++) { screens.get(i).setClickable(false); }
+    if (f.equals("title")) {
+        overworld.setClickable(true);
+        credits.setClickable(true);
+    } else if (f.equals("overworld")) {
+        title.setClickable(true);
+        for (int i = 3; i <= 9; i++) {
+            screens.get(i).setClickable(true);
         }
-        i++;
+    } else if (f.equals("credits")) {
+        title.setClickable(true);
     }
-    if (fileName.equals("title")) {
-        buttons.get(1).setClickable(true);
-        buttons.get(2).setClickable(true);
-    }
-    if (fileName.equals("overworld")) {
-        buttons.get(0).setClickable(true);
-        buttons.get(2).setClickable(false);
-    }
-    if (fileName.equals("credits")) {
-        buttons.get(0).setClickable(true);
-        buttons.get(1).setClickable(false);
-    }
+
+
 }
 
     //EVERYTHING MOUSE - PRESS GOES HERE
