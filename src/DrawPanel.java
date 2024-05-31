@@ -13,12 +13,10 @@ class DrawPanel extends JPanel implements MouseListener {
 
     private BufferedImage backdrop;
     private BufferedImage sidebar;
-    private BufferedImage dialogBox;
+    private BufferedImage textBox;
     private String fileName = "title";
-    private int x;
-    private int y;
     private boolean isShowingSidebar;
-    private boolean isShowingDialogBox;
+    private boolean isShowingTextBox;
     private ArrayList<NamedRect> screens;
     private ArrayList<NamedRect> areas;
 
@@ -52,7 +50,7 @@ public DrawPanel() {
     areas.add(volcano);
     areas.add(house);
     isShowingSidebar = false;
-    isShowingDialogBox = false;
+    isShowingTextBox = false;
 }
 
 public void checkButtons(Point clicked) {
@@ -61,7 +59,26 @@ public void checkButtons(Point clicked) {
 }
 
 public void writeDialogue(String name, String text, Graphics g) {
-
+    int x = 10;
+    int y = 560;
+    g.setFont(new Font("Papyrus",Font.BOLD,30));
+    g.setColor(new Color(255,255,255));
+    g.drawString(name,20,540);
+    g.setFont(new Font("Papyrus",Font.ROMAN_BASELINE,18));
+    ArrayList<String> textArray = new ArrayList<String>();
+    for (int i = 0; i < text.length();i ++) { textArray.add(text.substring(i,i+1)); } // CONVERTS TEXT TO ARRAY
+    for (String s : textArray) {
+        g.drawString(s,x,y);
+        if(s.equals("M") || s.equals("W") || s.equals("O") || s.equals("X") || s.equals("S")
+                || s.equals("Q") || s.equals("K") || s.equals("C") || s.equals("A")) x += 18;
+        else if(s.equals("i") || s.equals("j") || s.equals("l")) x += 2;
+        else if(s.equals("f")) x += 7;
+        else x += 10;
+        if (x > 750) {
+            x = 10;
+            y += 25;
+        }
+    }
 }
 
     protected void paintComponent(Graphics g) {
@@ -69,15 +86,16 @@ public void writeDialogue(String name, String text, Graphics g) {
         try {
             backdrop = ImageIO.read(new File("images/" + fileName + ".png"));
             sidebar = ImageIO.read(new File("images/sidebar.png"));
-            dialogBox = ImageIO.read(new File("images/dialogbox.png"));
+            textBox = ImageIO.read(new File("images/textbox.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         if(isShowingSidebar) {
             g.drawImage(sidebar,800,0,null);
         }
-        if(isShowingDialogBox) {
-            g.drawImage(dialogBox,0,500,null);
+        if(isShowingTextBox) {
+            g.drawImage(textBox,0,500,null);
+            writeDialogue("welcome to the classroom","",g);
         }
         g.drawImage(backdrop, 0 , 0, null);
     }
@@ -106,7 +124,7 @@ public void writeDialogue(String name, String text, Graphics g) {
     if (isInArea) { // IF IN AN AREA, ALL AREA BUTTONS ARE DISABLED. ONLY SUBAREA BUTTONS ARE ENABLED AND THE OVERWORLD.
         disableButtons();
         isShowingSidebar = true;
-        isShowingDialogBox = true;
+        isShowingTextBox = true;
     }
 
 }
