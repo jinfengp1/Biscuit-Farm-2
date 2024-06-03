@@ -31,6 +31,7 @@ class DrawPanel extends JPanel implements MouseListener {
     private NamedRect forest = new NamedRect("FOREST",500,190,100,60);
     private NamedRect volcano = new NamedRect("VOLCANO",140,520,100,60);
     private NamedRect house = new NamedRect("HOUSE",300,10,70,40);
+    private Item[] testing = null;
 
 
 public DrawPanel() {
@@ -51,35 +52,37 @@ public DrawPanel() {
     areas.add(house);
     isShowingSidebar = false;
     isShowingTextBox = false;
+    Item[] testing = null;
 }
 
-public void checkButtons(Point clicked) {
+    public void checkButtons(Point clicked) {
     for (NamedRect s : screens) { if (s.contains(clicked) && s.clickable) { fileName = s.getName(); } }
     for (NamedRect a : areas) { if (a.contains(clicked) && a.clickable) { fileName = a.getName(); } }
 }
 
-public void writeDialogue(String name, String text, Graphics g) {
+    public void writeDialogue(String name, String text, Graphics g) {
     int x = 10;
-    int y = 560;
+    int y = 570;
     g.setFont(new Font("Papyrus",Font.BOLD,30));
     g.setColor(new Color(255,255,255));
     g.drawString(name,20,540);
     g.setFont(new Font("Papyrus",Font.ROMAN_BASELINE,18));
     ArrayList<String> textArray = new ArrayList<String>();
-    for (int i = 0; i < text.length();i ++) { textArray.add(text.substring(i,i+1)); } // CONVERTS TEXT TO ARRAY
-    for (String s : textArray) {
-        g.drawString(s,x,y);
-        if(s.equals("M") || s.equals("W") || s.equals("O") || s.equals("X") || s.equals("S")
-                || s.equals("Q") || s.equals("K") || s.equals("C") || s.equals("A")) x += 18;
-        else if(s.equals("i") || s.equals("j") || s.equals("l")) x += 2;
-        else if(s.equals("f")) x += 7;
-        else x += 10;
-        if (x > 750) {
-            x = 10;
-            y += 25;
-        }
+    int b = text.length() % 80;
+    int a = text.length() / 80;
+    for (int i = 0; i < a; i+=80) {
+        g.drawString(text.substring(i,i+80),x,y);
+        y += 25; }
+    g.drawString(text.substring(text.length()-b),x,y);
     }
-}
+
+    public void fillSidebar(String name, Item[] stuff, Graphics g) {
+        g.setColor(new Color(255,255,255));
+        g.setFont(new Font("Papyrus",Font.BOLD,50));
+        g.drawString(name,820,60);
+    }
+
+
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -92,10 +95,11 @@ public void writeDialogue(String name, String text, Graphics g) {
         }
         if(isShowingSidebar) {
             g.drawImage(sidebar,800,0,null);
+            fillSidebar("Biscuit Boy", testing, g);
         }
         if(isShowingTextBox) {
             g.drawImage(textBox,0,500,null);
-            writeDialogue("welcome to the classroom","",g);
+            writeDialogue("welcome to the classroom","HOly pfgdivfnursihgeriufhgrwkjfnwgbeuiwbfuiuiwfwuihfwiuehfwhfhfwfwfhuwhweuihapyrus dinglebeyeah HOly papyrus dinglebeapyrus Undertale fortnite yeahHOly papyrus dingleberries and Papyrus Undertale fortnite yeah grendle",g);
         }
         g.drawImage(backdrop, 0 , 0, null);
     }
