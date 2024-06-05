@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -31,11 +32,18 @@ class DrawPanel extends JPanel implements MouseListener {
     private NamedRect forest = new NamedRect("FOREST",500,190,100,60);
     private NamedRect volcano = new NamedRect("VOLCANO",140,520,100,60);
     private NamedRect house = new NamedRect("HOUSE",300,10,70,40);
-    private Item[] testing = null;
+
+    private NamedRect nextDay = new NamedRect("Day",370,720,300,80); // NOT A LOCATION
+    private ArrayList<Item> testing = null;
+    private String sideName = "Jabran is Cool";
+    private String textboxName = "Jabran is Cool";
+    private String textboxDesc = "Jabran is Cool";
+
+    private Game m = new Game();
 
 
 public DrawPanel() {
-
+// AREAS ARE THE SCREENS WITH SIDEBAR AND DIALOGUE BOX
     this.addMouseListener(this);
     screens = new ArrayList<NamedRect>();
     areas = new ArrayList<NamedRect>();
@@ -52,12 +60,12 @@ public DrawPanel() {
     areas.add(house);
     isShowingSidebar = false;
     isShowingTextBox = false;
-    Item[] testing = null;
 }
 
     public void checkButtons(Point clicked) {
     for (NamedRect s : screens) { if (s.contains(clicked) && s.clickable) { fileName = s.getName(); } }
     for (NamedRect a : areas) { if (a.contains(clicked) && a.clickable) { fileName = a.getName(); } }
+    if (nextDay.contains(clicked) && nextDay.clickable) { m.day++; }
 }
 
     public void writeDialogue(String name, String text, Graphics g) {
@@ -66,7 +74,7 @@ public DrawPanel() {
     g.setFont(new Font("NSimSun",Font.BOLD,30));
     g.setColor(new Color(255,255,255));
     g.drawString(name,20,540);
-    g.setFont(new Font("NSimSun",Font.ROMAN_BASELINE,18));
+    g.setFont(new Font("NSimSun",Font.ROMAN_BASELINE,21));
     int b = text.length() % 80;
     int a = text.length() / 80;
     for (int i = 0; i < a; i+=80) {
@@ -75,12 +83,19 @@ public DrawPanel() {
     g.drawString(text.substring(text.length()-b),x,y);
     }
 
-    public void fillSidebar(String name, Item[] stuff, Graphics g) {
+    public void fillSidebar(String name, ArrayList<Item> stuff, Graphics g) {
         g.setColor(new Color(255,255,255));
         g.setFont(new Font("NSimSun",Font.BOLD,50));
         g.drawString(name,820,60);
     }
 
+    public void updateSidebar() {
+    for (NamedRect a : areas) {
+        if (a.getName().equals(fileName)) {
+            sideName = fileName;
+        }
+    }
+    }
 
 
     protected void paintComponent(Graphics g) {
@@ -94,16 +109,23 @@ public DrawPanel() {
         }
         if(isShowingSidebar) {
             g.drawImage(sidebar,800,0,null);
-            fillSidebar("Biscuit Boy", testing, g);
+            fillSidebar(sideName, testing, g);
+            updateSidebar();
         }
         if(isShowingTextBox) {
             g.drawImage(textBox,0,500,null);
-            writeDialogue("welcome to the classroom","HOly pfgdivfnursihgeriufhgrwkjfnwgbeuiwbfuiuiwfwuihfwiuehfwhfhfwfwfhuwhweuihapyrus dinglebeyeah HOly papyrus dinglebeapyrus Undertale fortnite yeahHOly papyrus dingleberries and Papyrus Undertale fortnite yeah grendle",g);
+            writeDialogue(textboxName,textboxDesc,g);
         }
         g.drawImage(backdrop, 0 , 0, null);
+        if (fileName.equals("overworld")) {
+            g.setColor(new Color(0,0,0));
+            g.setFont(new Font("NSimSun",Font.BOLD,70));
+            g.drawString("" + m.getDay(),960,780);
+        }
     }
 
     public void disableButtons() {
+        nextDay.setClickable(false);
         for (int i = 0; i < screens.size(); i++) { screens.get(i).setClickable(false); }
         for (int i = 0; i < areas.size(); i++) { areas.get(i).setClickable(false); }
         if (isShowingSidebar) cornerX.setClickable(true);
@@ -117,6 +139,7 @@ public DrawPanel() {
         credits.setClickable(true);
     } else if (f.equals("overworld")) {
         title.setClickable(true);
+        nextDay.setClickable(true);
         for (int i = 0; i < areas.size(); i++) {
             areas.get(i).setClickable(true);
         }
