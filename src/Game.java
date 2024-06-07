@@ -19,6 +19,8 @@ public class Game extends JPanel {
     public final Biscuit basic = new Biscuit("Basic", "The cheap reliable food of most Biscuitown residents.", 5, 8, 1);
 
     public Game() {
+        money = 10;
+        fees = 5;
         inventory.add(basic);
         inventory.add(basic);
         loadImage();
@@ -32,6 +34,9 @@ public class Game extends JPanel {
         }
     }
 
+    public void calculateFees() {
+
+    }
 
 
     public int getDay() {

@@ -33,13 +33,19 @@ class DrawPanel extends JPanel implements MouseListener {
     private NamedRect forest = new NamedRect("Sugar Forest","FOREST",500,190,100,60);
     private NamedRect volcano = new NamedRect("The Oven","VOLCANO",140,520,100,60);
     private NamedRect house = new NamedRect("Strange House","HOUSE",300,10,70,40);
-    private NamedRect plantationPlot1 = new NamedRect("PlotbaseBasic",400,400,100,100);
-    private NamedRect plantationPlot2 = new NamedRect("PlotbaseBasic", 2000,2000,1,1); // UNCLICKABLE FOR NOW
-    private NamedRect plantationPlot3 = new NamedRect("PlotbaseBasic", 2000,2000,1,1); // UNCLICKABLE FOR NOW
-    private NamedRect mountainPlot1 = new NamedRect("PlotbaseMountain", 2000,2000,1,1); // UNCLICKABLE FOR NOW
-    private NamedRect desertPlot1 = new NamedRect("PlotbaseDesert", 2000,2000,1,1); // UNCLICKABLE FOR NOW
-    private NamedRect volcanoPlot1 = new NamedRect("PlotbaseVolcano", 2000,2000,1,1); // UNCLICKABLE FOR NOW
-    private NamedRect forestPlot1 = new NamedRect("PlotbaseBasic", 2000,2000,1,1); // UNCLICKABLE FOR NOW
+    private NamedRect plantationPlot1 = new NamedRect("PlotbaseBasic",30,130,100,60);
+    private NamedRect plantationPlot2 = new NamedRect("PlotbaseBasic", 380,360,100,60);
+    private NamedRect plantationPlot3 = new NamedRect("PlotbaseBasic", 440,100,100,60);
+    private NamedRect mountainPlot1 = new NamedRect("PlotbaseMountain", 350,300,80,50);
+    private NamedRect desertPlot1 = new NamedRect("PlotbaseDesert", 150,350,100,50);
+    private NamedRect volcanoPlot1 = new NamedRect("PlotbaseVolcano", 300,350,100,60);
+    private NamedRect forestPlot1 = new NamedRect("PlotbaseBasic", 290,250,100,60);
+    private NamedRect biscuitshop = new NamedRect("shop_bb",60,300,100,60);
+    private NamedRect itemshop = new NamedRect("shop_sc",540,255,80,60);
+    private NamedRect pawnshop = new NamedRect("shop_ps",450,290,100,60);
+    private NamedRect secretshop = new NamedRect("shop_aac",2000,2000,1,1);
+    private NamedRect bakeryshop = new NamedRect("shop_bs",320,140,100,40);
+
     private NamedRect nextDay = new NamedRect("Day",370,720,300,80); // NOT A LOCATION
     private ArrayList<Item> testing = null;
     // --- PLACEHOLDERS ---
@@ -72,6 +78,18 @@ public DrawPanel() {
     areas.add(house);
     // SUBAREAS
     subAreas.add(plantationPlot1);
+    subAreas.add(plantationPlot2);
+    subAreas.add(plantationPlot3);
+    subAreas.add(mountainPlot1);
+    subAreas.add(forestPlot1);
+    subAreas.add(desertPlot1);
+    subAreas.add(volcanoPlot1);
+
+    subAreas.add(secretshop);
+    subAreas.add(biscuitshop);
+    subAreas.add(pawnshop);
+    subAreas.add(itemshop);
+    subAreas.add(bakeryshop);
 
     isShowingSidebar = false;
     isShowingTextBox = false;
@@ -167,10 +185,6 @@ public DrawPanel() {
             g.setFont(new Font("NSimSun",Font.BOLD,70));
             g.drawString("" + m.getDay(),960,780);
         }
-        if (fileName.equals("PLANTATION")) {
-            g.setColor(new Color(0,0,0));
-            g.drawRect(400,400,100,100);
-        }
     }
 
     public void disableButtons() {
@@ -201,7 +215,28 @@ public DrawPanel() {
         disableButtons();
         if (f.equals("PLANTATION")) {
             plantationPlot1.setClickable(true);
+            plantationPlot2.setClickable(true);
+            plantationPlot3.setClickable(true);
         }
+        else if (f.equals("MOUNTAIN")) {
+            mountainPlot1.setClickable(true);
+        }
+        else if (f.equals("FOREST")) {
+            forestPlot1.setClickable(true);
+        }
+        else if (f.equals("DESERT")) {
+            desertPlot1.setClickable(true);
+            pawnshop.setClickable(true);
+        }
+        else if (f.equals("VOLCANO")) {
+            volcanoPlot1.setClickable(true);
+        }
+        else if (f.equals("BISCUITOWN")) {
+            biscuitshop.setClickable(true);
+            bakeryshop.setClickable(true);
+            itemshop.setClickable(true);
+        }
+
         isShowingSidebar = true;
         isShowingTextBox = true;
     }
