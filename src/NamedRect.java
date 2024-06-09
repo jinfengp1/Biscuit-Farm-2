@@ -3,7 +3,6 @@ import java.awt.*;
 public class NamedRect extends Rectangle{
     private String name;
     private String fileName;
-
     public boolean clickable;
 
     public NamedRect(String n,String f, int x, int y, int width, int height) {
@@ -11,8 +10,8 @@ public class NamedRect extends Rectangle{
         fileName = f;
         name = n;
         clickable = true;
-    }
 
+    }
     public NamedRect(String f, int x, int y, int width, int height) {
         super(x,y,width,height);
         fileName = f;
@@ -25,6 +24,8 @@ public class NamedRect extends Rectangle{
     }
 
     public String getFileName() { return fileName; }
+
+    public void setFileName(String f) { fileName = f; }
 
     public boolean isClickable() { return clickable; }
 

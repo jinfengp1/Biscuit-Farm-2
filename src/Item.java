@@ -1,14 +1,17 @@
 
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.awt.Rectangle;
 
 public class Item {
-    int cost;
-    String name;
-    BufferedImage image;
-    String description;
+    public int cost;
+    public String name;
+    public BufferedImage image;
+    public String description;
+    public Rectangle rect;
 
     public Item(String name, int cost, String description) {
         this.name = name;
@@ -19,6 +22,7 @@ public class Item {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        rect = new Rectangle(-100,-100,image.getWidth(),image.getHeight());
     }
 
     public int getCost() {
