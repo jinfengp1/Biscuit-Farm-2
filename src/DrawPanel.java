@@ -11,6 +11,7 @@ import java.util.*;
 
 class DrawPanel extends JPanel implements MouseListener {
 
+    private Point hover;
     private BufferedImage backdrop;
     private BufferedImage sidebar;
     private BufferedImage textBox;
@@ -61,6 +62,7 @@ class DrawPanel extends JPanel implements MouseListener {
 public DrawPanel() {
 // AREAS AND SUBAREAS ARE THE SCREENS WITH SIDEBAR AND DIALOGUE BOX
     // SUBAREAS ARE ONLY SUPPOSED TO BE ACCESSIBLE WITHIN AREAS
+    hover = new Point(0,0);
     this.addMouseListener(this);
     screens = new ArrayList<NamedRect>();
     areas = new ArrayList<NamedRect>();
@@ -159,6 +161,12 @@ public DrawPanel() {
 
     public void updateTextbox() {
     if (fileName.equals("inventory")) {
+        ArrayList<Item> inv = m.inventory;
+        int x = 20;
+        int y = 20;
+        for (Item t : inv) {
+            // ----------------- UPDATE TEXT BOX NAME AND DESCRIPTION BASED ON HOVER LOCATION ----------------------
+        }
         textboxDesc = "Hover over anything for its description!";
         textboxName = "Inventory";
     }
@@ -207,6 +215,25 @@ public DrawPanel() {
             g.setFont(new Font("NSimSun",Font.BOLD,70));
             g.drawString("" + m.getDay(),960,780);
         }
+        if (fileName.equals("inventory")) {
+            drawInventory(g);
+        }
+    }
+
+    public void drawInventory(Graphics g) {
+    ArrayList<Item> inv = m.inventory;
+    int x = 20;
+    int y = 20;
+    for (Item t : inv) {
+        g.drawImage(t.getImage(),x,y,null);
+        g.setColor(new Color(255,255,255));
+        g.drawRect(x,y,t.rect.width,t.rect.height);
+        x += t.getImage().getWidth() + 20;
+        if (x >= 700) {
+            x = 20;
+            y += 60;
+        }
+    }
     }
 
     public void disableButtons() {
@@ -310,8 +337,7 @@ public DrawPanel() {
     }
 
     public void mouseEntered(MouseEvent e) {
-        Point in = e.getPoint();
-
+        hover = e.getPoint();
     }
 
 
