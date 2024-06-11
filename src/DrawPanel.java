@@ -1,8 +1,8 @@
+
 import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.*;
 
 class DrawPanel extends JPanel implements MouseListener {
 
-    private Point hover;
+    private Point e;
     private BufferedImage backdrop;
     private BufferedImage sidebar;
     private BufferedImage textBox;
@@ -59,79 +59,79 @@ class DrawPanel extends JPanel implements MouseListener {
     private String[] subareaDesc;
 
 
-public DrawPanel() {
+    public DrawPanel() {
 // AREAS AND SUBAREAS ARE THE SCREENS WITH SIDEBAR AND DIALOGUE BOX
-    // SUBAREAS ARE ONLY SUPPOSED TO BE ACCESSIBLE WITHIN AREAS
-    hover = new Point(0,0);
-    this.addMouseListener(this);
-    screens = new ArrayList<NamedRect>();
-    areas = new ArrayList<NamedRect>();
-    subAreas = new ArrayList<NamedRect>();
-    screens.add(title);
-    screens.add(overworld);
-    screens.add(credits);
-    screens.add(cornerX);
-    screens.add(toInventory);
-    areas.add(plantation);
-    areas.add(biscuitown);
-    areas.add(mountain);
-    areas.add(desert);
-    areas.add(forest);
-    areas.add(volcano);
-    areas.add(house);
-    // SUBAREAS
-    subAreas.add(plantationPlot1);
-    subAreas.add(plantationPlot2);
-    subAreas.add(plantationPlot3);
-    subAreas.add(mountainPlot1);
-    subAreas.add(forestPlot1);
-    subAreas.add(desertPlot1);
-    subAreas.add(volcanoPlot1);
+        // SUBAREAS ARE ONLY SUPPOSED TO BE ACCESSIBLE WITHIN AREAS
+        e = new Point(0,0);
+        this.addMouseListener(this);
+        screens = new ArrayList<NamedRect>();
+        areas = new ArrayList<NamedRect>();
+        subAreas = new ArrayList<NamedRect>();
+        screens.add(title);
+        screens.add(overworld);
+        screens.add(credits);
+        screens.add(cornerX);
+        screens.add(toInventory);
+        areas.add(plantation);
+        areas.add(biscuitown);
+        areas.add(mountain);
+        areas.add(desert);
+        areas.add(forest);
+        areas.add(volcano);
+        areas.add(house);
+        // SUBAREAS
+        subAreas.add(plantationPlot1);
+        subAreas.add(plantationPlot2);
+        subAreas.add(plantationPlot3);
+        subAreas.add(mountainPlot1);
+        subAreas.add(forestPlot1);
+        subAreas.add(desertPlot1);
+        subAreas.add(volcanoPlot1);
 
-    subAreas.add(secretshop); //INDEX 7
-    subAreas.add(biscuitshop);
-    subAreas.add(pawnshop);
-    subAreas.add(itemshop);
-    subAreas.add(bakeryshop);
+        subAreas.add(secretshop); //INDEX 7
+        subAreas.add(biscuitshop);
+        subAreas.add(pawnshop);
+        subAreas.add(itemshop);
+        subAreas.add(bakeryshop);
 
-    isShowingSidebar = false;
-    isShowingTextBox = false;
-    areaDesc = new String[areas.size()];
-    areaDesc[0] = "It's your plantation. It is always sunny! Perfect for growing biscuits.";
-    areaDesc[1] = "A bustling city on the island, where commerce thrives. You can also sell your food here at your own bakery.";
-    areaDesc[2] = "Mt.Cookie is the tallest mountain on the continent. It's freezing. Maybe a biscuit type can thrive here...";
-    areaDesc[3] = "The blazing desert. Somehow, you can grow biscuits here... Is that a pyramid?";
-    areaDesc[4] = "Apparently an old Biscuit Farmer owned this land. The sweet dirt is perfect for growing some biscuits here.";
-    areaDesc[5] = "It's impossibly hot here. You might find a biscuit type that can survive these temperatures.";
-    areaDesc[6] = "What is this place? Just one house in the middle of nowhere. Next to that huge portal thing?";
-    subareaDesc = new String[subAreas.size()];
-    subareaDesc[7] = "You see a dimly lit room. It looks like it's been abandoned for ages. There is a sign but you cannot make out the letters.";
-    subareaDesc[8] = "";
-    subareaDesc[9] = "Oh! It's the Pawn Shop. You can sell your stuff here, if the Pawn ever arrives (it wont lol)";
-    subareaDesc[10] = "It's Shovels Co. Nobody wants to work here. Maybe they'll find some desperate guy to hire.";
-    subareaDesc[11] = "It's your very own bakery! Sell your biscuits here.";
-}
+        isShowingSidebar = false;
+        isShowingTextBox = false;
+        areaDesc = new String[areas.size()];
+        areaDesc[0] = "It's your plantation. It is always sunny! Perfect for growing biscuits.";
+        areaDesc[1] = "A bustling city on the island, where commerce thrives. You can also sell your food here at your own bakery.";
+        areaDesc[2] = "Mt.Cookie is the tallest mountain on the continent. It's freezing. Maybe a biscuit type can thrive here...";
+        areaDesc[3] = "The blazing desert. Somehow, you can grow biscuits here... Is that a pyramid?";
+        areaDesc[4] = "Apparently an old Biscuit Farmer owned this land. The sweet dirt is perfect for growing some biscuits here.";
+        areaDesc[5] = "It's impossibly hot here. You might find a biscuit type that can survive these temperatures.";
+        areaDesc[6] = "What is this place? Just one house in the middle of nowhere. Next to that huge portal thing?";
+        subareaDesc = new String[subAreas.size()];
+        subareaDesc[7] = "You see a dimly lit room. It looks like it's been abandoned for ages. There is a sign but you cannot make out the letters.";
+        subareaDesc[8] = "";
+        subareaDesc[9] = "Oh! It's the Pawn Shop. You can sell your stuff here, if the Pawn ever arrives (it wont lol)";
+        subareaDesc[10] = "It's Shovels Co. Nobody wants to work here. Maybe they'll find some desperate guy to hire.";
+        subareaDesc[11] = "It's your very own bakery! Sell your biscuits here.";
+    }
 
     public void checkButtons(Point clicked) {
-    for (NamedRect s : screens) { if (s.contains(clicked) && s.clickable) { fileName = s.getFileName(); } }
-    for (NamedRect a : areas) { if (a.contains(clicked) && a.clickable) { fileName = a.getFileName(); } }
-    for (NamedRect a : subAreas) { if (a.contains(clicked) && a.clickable) { fileName = a.getFileName(); } }
-    if (nextDay.contains(clicked) && nextDay.clickable) { m.day++; }
-}
+        for (NamedRect s : screens) { if (s.contains(clicked) && s.clickable) { fileName = s.getFileName(); } }
+        for (NamedRect a : areas) { if (a.contains(clicked) && a.clickable) { fileName = a.getFileName(); } }
+        for (NamedRect a : subAreas) { if (a.contains(clicked) && a.clickable) { fileName = a.getFileName(); } }
+        if (nextDay.contains(clicked) && nextDay.clickable) { m.day++; }
+    }
 
     public void writeDialogue(String name, String text, Graphics g) {
-    int x = 10;
-    int y = 570;
-    g.setFont(new Font("NSimSun",Font.BOLD,30));
-    g.setColor(new Color(255,255,255));
-    g.drawString(name,20,540);
-    g.setFont(new Font("NSimSun",Font.ROMAN_BASELINE,21));
-    int b = text.length() % 60;
-    int a = text.length() / 60;
-    for (int i = 0; i < a*60; i+=60) {
-        g.drawString(text.substring(i,i+60),x,y);
-        y += 25; }
-    g.drawString(text.substring(text.length()-b),x,y);
+        int x = 10;
+        int y = 570;
+        g.setFont(new Font("NSimSun",Font.BOLD,30));
+        g.setColor(new Color(255,255,255));
+        g.drawString(name,20,540);
+        g.setFont(new Font("NSimSun",Font.ROMAN_BASELINE,21));
+        int b = text.length() % 60;
+        int a = text.length() / 60;
+        for (int i = 0; i < a*60; i+=60) {
+            g.drawString(text.substring(i,i+60),x,y);
+            y += 25; }
+        g.drawString(text.substring(text.length()-b),x,y);
     }
 
     public void fillSidebar(String name, ArrayList<Item> stuff, Graphics g) {
@@ -144,14 +144,14 @@ public DrawPanel() {
     }
 
     public void updateSidebar() {
-    if (fileName.equals("inventory")) {
-        sideName = "Inventory";
-    }
-    for (NamedRect a : areas) {
-        if (a.getFileName().equals(fileName)) {
-            sideName = a.getName();
+        if (fileName.equals("inventory")) {
+            sideName = "Inventory";
         }
-    }
+        for (NamedRect a : areas) {
+            if (a.getFileName().equals(fileName)) {
+                sideName = a.getName();
+            }
+        }
         for (NamedRect s : subAreas) {
             if (s.getFileName().equals(fileName)) {
                 sideName = s.getName();
@@ -160,22 +160,12 @@ public DrawPanel() {
     }
 
     public void updateTextbox() {
-    if (fileName.equals("inventory")) {
-        ArrayList<Item> inv = m.inventory;
-        int x = 20;
-        int y = 20;
-        for (Item t : inv) {
-            // ----------------- UPDATE TEXT BOX NAME AND DESCRIPTION BASED ON HOVER LOCATION ----------------------
+        for (int i = 0; i < areas.size(); i++ ) { // INVENTORY IS NOT IN THESE ARRAYS.
+            if (areas.get(i).getFileName().equals(fileName)) {
+                textboxName = areas.get(i).getName();
+                textboxDesc = areaDesc[i];
+            }
         }
-        textboxDesc = "Hover over anything for its description!";
-        textboxName = "Inventory";
-    }
-    for (int i = 0; i < areas.size(); i++ ) {
-        if (areas.get(i).getFileName().equals(fileName)) {
-            textboxName = areas.get(i).getName();
-            textboxDesc = areaDesc[i];
-        }
-    }
         for (int i = 7; i < subAreas.size(); i++ ) {
             if (subAreas.get(i).getFileName().equals(fileName)) {
                 textboxName = subAreas.get(i).getName();
@@ -221,19 +211,30 @@ public DrawPanel() {
     }
 
     public void drawInventory(Graphics g) {
-    ArrayList<Item> inv = m.inventory;
-    int x = 20;
-    int y = 20;
-    for (Item t : inv) {
-        g.drawImage(t.getImage(),x,y,null);
-        g.setColor(new Color(255,255,255));
-        g.drawRect(x,y,t.rect.width,t.rect.height);
-        x += t.getImage().getWidth() + 20;
-        if (x >= 700) {
-            x = 20;
-            y += 60;
+        ArrayList<Item> inv = m.inventory;
+        int x = 20;
+        int y = 20;
+        for (Item t : inv) {
+            g.drawImage(t.getImage(),x,y,null);
+            g.setColor(new Color(255,255,255));
+            Rectangle rect = new Rectangle(x,y,t.image.getWidth(),t.image.getHeight());
+            g.drawRect(x,y,t.image.getWidth(),t.image.getHeight());
+            Point p = MouseInfo.getPointerInfo().getLocation();
+            p.y -= 30;
+            p.x -= 8;
+            if (rect.contains(p)) {
+                textboxName = t.getName();
+                textboxDesc = t.getDescription();
+            } else {
+                textboxName = "Inventory";
+                textboxDesc = "Click anything for its description!";
+            }
+            x += t.getImage().getWidth() + 20;
+            if (x >= 700) {
+                x = 20;
+                y += 60;
+            }
         }
-    }
     }
 
     public void disableButtons() {
@@ -262,87 +263,78 @@ public DrawPanel() {
     }
 
     public void repositionButtons() { // RE-POSITIONS BUTTONS BASED ON CURRENT SCREEN
-    String f = fileName;
-    boolean isInArea = false;
-    boolean isInSubarea = false;
-    disableButtons();
-    updateCornerX();
-    if (f.equals("title")) {
-        overworld.setClickable(true);
-        credits.setClickable(true);
-    } else if (f.equals("overworld")) {
-        title.setClickable(true);
-        nextDay.setClickable(true);
-        for (int i = 0; i < areas.size(); i++) {
-            areas.get(i).setClickable(true);
-        }
-    } else if (f.equals("credits")) {
-        title.setClickable(true);
-    }
-    for (NamedRect a : areas) { if (f.equals(a.getFileName())) isInArea = true; }
-    for (NamedRect a : subAreas) { if (f.equals(a.getFileName())) isInSubarea = true; }
-    if (isInArea) { // IF IN AN AREA, ALL AREA BUTTONS ARE DISABLED. ONLY SUBAREA BUTTONS ARE ENABLED AND THE OVERWORLD   .
+        String f = fileName;
+        boolean isInArea = false;
+        boolean isInSubarea = false;
         disableButtons();
-        if (f.equals("PLANTATION")) {
-            plantationPlot1.setClickable(true);
-            plantationPlot2.setClickable(true);
-            plantationPlot3.setClickable(true);
+        updateCornerX();
+        if (f.equals("title")) {
+            overworld.setClickable(true);
+            credits.setClickable(true);
+        } else if (f.equals("overworld")) {
+            title.setClickable(true);
+            nextDay.setClickable(true);
+            for (int i = 0; i < areas.size(); i++) {
+                areas.get(i).setClickable(true);
+            }
+        } else if (f.equals("credits")) {
+            title.setClickable(true);
         }
-        else if (f.equals("MOUNTAIN")) {
-            mountainPlot1.setClickable(true);
-        }
-        else if (f.equals("FOREST")) {
-            forestPlot1.setClickable(true);
-        }
-        else if (f.equals("DESERT")) {
-            desertPlot1.setClickable(true);
-            pawnshop.setClickable(true);
-        }
-        else if (f.equals("VOLCANO")) {
-            volcanoPlot1.setClickable(true);
-        }
-        else if (f.equals("BISCUITOWN")) {
-            biscuitshop.setClickable(true);
-            bakeryshop.setClickable(true);
-            itemshop.setClickable(true);
-        }
-        else if (f.equals("HOUSE")) {
-            secretshop.setClickable(true);
-        }
+        for (NamedRect a : areas) { if (f.equals(a.getFileName())) isInArea = true; }
+        for (NamedRect a : subAreas) { if (f.equals(a.getFileName())) isInSubarea = true; }
+        if (isInArea) { // IF IN AN AREA, ALL AREA BUTTONS ARE DISABLED. ONLY SUBAREA BUTTONS ARE ENABLED AND THE OVERWORLD   .
+            disableButtons();
+            if (f.equals("PLANTATION")) {
+                plantationPlot1.setClickable(true);
+                plantationPlot2.setClickable(true);
+                plantationPlot3.setClickable(true);
+            }
+            else if (f.equals("MOUNTAIN")) {
+                mountainPlot1.setClickable(true);
+            }
+            else if (f.equals("FOREST")) {
+                forestPlot1.setClickable(true);
+            }
+            else if (f.equals("DESERT")) {
+                desertPlot1.setClickable(true);
+                pawnshop.setClickable(true);
+            }
+            else if (f.equals("VOLCANO")) {
+                volcanoPlot1.setClickable(true);
+            }
+            else if (f.equals("BISCUITOWN")) {
+                biscuitshop.setClickable(true);
+                bakeryshop.setClickable(true);
+                itemshop.setClickable(true);
+            }
+            else if (f.equals("HOUSE")) {
+                secretshop.setClickable(true);
+            }
 
-        isShowingSidebar = true;
-        isShowingTextBox = true;
-    } else if (f.equals("inventory")){
-        isShowingSidebar = true;
-        isShowingTextBox = true;
-    } else if (!isInSubarea) {
-        isShowingSidebar = false;
-        isShowingTextBox = false;
+            isShowingSidebar = true;
+            isShowingTextBox = true;
+        } else if (f.equals("inventory")){
+            isShowingSidebar = true;
+            isShowingTextBox = true;
+        } else if (!isInSubarea) {
+            isShowingSidebar = false;
+            isShowingTextBox = false;
+        }
     }
-}
 
     //EVERYTHING MOUSE - PRESS GOES HERE
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(MouseEvent f) {
 
 
-        Point clicked = e.getPoint();
-        if (e.getButton() == 1) {
-            checkButtons(clicked);
+        e = f.getPoint();
+
+        if (f.getButton() == 1) {
+            checkButtons(e);
             repositionButtons();
         }
 
-        if (e.getButton() == 3) { // IF RIGHT MOUSE BUTTON
 
-        }
     }
-
-    public void mouseEntered(MouseEvent e) {
-        hover = e.getPoint();
-    }
-
-
-
-
 
 
 
@@ -352,7 +344,9 @@ public DrawPanel() {
 
 
     // USELESS ZONE ---------------------------
-    public void mouseReleased(MouseEvent e) { }
-    public void mouseExited(MouseEvent e) { }
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseReleased(MouseEvent f) { }
+    public void mouseExited(MouseEvent f) { }
+    public void mouseClicked(MouseEvent f) { }
+    public void mouseEntered(MouseEvent f) { }
+
 }

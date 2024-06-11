@@ -13,11 +13,12 @@ public class Game extends JPanel {
     public int money;
     public int fees;
     public int day;
-    public final Biscuit basic = new Biscuit("Basic", "The cheap reliable food of most Biscuitown residents.", 5, 8, 1);
+    public final Biscuit basic = new Biscuit("Basic Biscuit", "Yummy Biscuit. Nothing special about it.", 5, 8, 1);
 
     public Game() {
         money = 10;
         fees = 5;
+        inventory.add(basic);
         inventory.add(basic);
         inventory.add(basic);
         loadImage();
