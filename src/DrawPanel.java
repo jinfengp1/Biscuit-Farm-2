@@ -12,6 +12,7 @@ import java.util.*;
 class DrawPanel extends JPanel implements MouseListener {
 
     private Point e;
+    private ArrayList<NamedRect> invRects;
     private BufferedImage backdrop;
     private BufferedImage sidebar;
     private BufferedImage textBox;
@@ -63,6 +64,7 @@ class DrawPanel extends JPanel implements MouseListener {
 // AREAS AND SUBAREAS ARE THE SCREENS WITH SIDEBAR AND DIALOGUE BOX
         // SUBAREAS ARE ONLY SUPPOSED TO BE ACCESSIBLE WITHIN AREAS
         e = new Point(0,0);
+        invRects = new ArrayList<NamedRect>();
         this.addMouseListener(this);
         screens = new ArrayList<NamedRect>();
         areas = new ArrayList<NamedRect>();
@@ -207,6 +209,18 @@ class DrawPanel extends JPanel implements MouseListener {
         }
         if (fileName.equals("inventory")) {
             drawInventory(g);
+            Point p = MouseInfo.getPointerInfo().getLocation();
+            p.y -= 30;
+            p.x -= 8;
+            for (NamedRect rect : invRects) {
+                if (rect.contains(p)) {
+                    textboxName = rect.getName();
+                    textboxDesc = rect.getFileName();
+                } else {
+                    textboxName = "Inventory";
+                    textboxDesc = "Click anything for its description!";
+                }
+            }
         }
     }
 
@@ -217,18 +231,9 @@ class DrawPanel extends JPanel implements MouseListener {
         for (Item t : inv) {
             g.drawImage(t.getImage(),x,y,null);
             g.setColor(new Color(255,255,255));
-            Rectangle rect = new Rectangle(x,y,t.image.getWidth(),t.image.getHeight());
+            NamedRect rec = new NamedRect(t.getName(),t.getDescription(),x,y,t.image.getWidth(),t.image.getHeight());
+            invRects.add(rec);
             g.drawRect(x,y,t.image.getWidth(),t.image.getHeight());
-            Point p = MouseInfo.getPointerInfo().getLocation();
-            p.y -= 30;
-            p.x -= 8;
-            if (rect.contains(p)) {
-                textboxName = t.getName();
-                textboxDesc = t.getDescription();
-            } else {
-                textboxName = "Inventory";
-                textboxDesc = "Click anything for its description!";
-            }
             x += t.getImage().getWidth() + 20;
             if (x >= 700) {
                 x = 20;
